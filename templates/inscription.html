@@ -1,0 +1,490 @@
+{% extends 'base.html' %}
+
+{% block titre %}Inscription au Concours ESATIC{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-12">
+    <!-- Hero Section -->
+    <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold mb-3 text-blue-700">Formulaire d'Inscription au Concours</h1>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">Veuillez remplir tous les champs ci-dessous pour soumettre votre candidature au concours ESATIC.</p>
+    </div>
+    
+    <!-- Card with Form -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 md:p-10">
+        {% if form.errors %}
+        <div class="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-4 rounded mb-8" role="alert">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="font-medium">Veuillez corriger les erreurs ci-dessous</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <form method="POST" enctype="multipart/form-data" id="inscription-form">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            
+            <!-- Progress Indicator -->
+            <div class="mb-10">
+                <div class="mb-4 flex justify-between text-sm font-medium">
+                    <span id="step1-label" class="text-blue-700">Informations personnelles</span>
+                    <span id="step2-label" class="text-gray-400">Documents requis</span>
+                    <span id="step3-label" class="text-gray-400">Confirmation</span>
+                </div>
+                <div class="relative">
+                    <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-100">
+                        <div id="progress-bar" class="w-1/3 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600 transition-all duration-500"></div>
+                    </div>
+                    <div class="flex justify-between w-full absolute top-[-24px]">
+                        <div id="step1-circle" class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">1</div>
+                        <div id="step2-circle" class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold">2</div>
+                        <div id="step3-circle" class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold">3</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 1: Informations personnelles -->
+            <div id="step1" class="form-step active">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                    <div class="md:col-span-2 mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Informations personnelles</h2>
+                    </div>
+                    
+                    <!-- Nom -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.nom.id_for_label }}" class="font-medium text-gray-700 mb-2">Nom</label>
+                        {{ form.nom }}
+                        {% if form.nom.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.nom.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Prénom -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.prenom.id_for_label }}" class="font-medium text-gray-700 mb-2">Prénom</label>
+                        {{ form.prenom }}
+                        {% if form.prenom.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.prenom.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.email.id_for_label }}" class="font-medium text-gray-700 mb-2">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Niveau d'études -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.niveauEtude.id_for_label }}" class="font-medium text-gray-700 mb-2">Niveau d'études</label>
+                        {{ form.niveauEtude }}
+                        {% if form.niveauEtude.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.niveauEtude.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Établissement d'origine -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.etablissementOrigine.id_for_label }}" class="font-medium text-gray-700 mb-2">Établissement d'origine</label>
+                        {{ form.etablissementOrigine }}
+                        {% if form.etablissementOrigine.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.etablissementOrigine.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Concours souhaité -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.concoursSouhaiter.id_for_label }}" class="font-medium text-gray-700 mb-2">Concours souhaité</label>
+                        {{ form.concoursSouhaiter }}
+                        {% if form.concoursSouhaiter.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.concoursSouhaiter.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button type="button" id="next-to-step2" class="px-8 py-4 bg-gradient-to-r from-blue-700 to-blue-500 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:from-blue-800 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        Étape suivante <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Documents requis -->
+            <div id="step2" class="form-step hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                    <div class="md:col-span-2 mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Documents requis</h2>
+                        <p class="text-gray-600 text-sm mb-4">Tous les documents doivent être au format PDF ou JPEG et ne pas dépasser 5 Mo.</p>
+                    </div>
+                    
+                    <!-- Photo d'identité -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.photo.id_for_label }}" class="font-medium text-gray-700 mb-2">
+                            Photo d'identité
+                            <span class="text-xs text-gray-500 font-normal">(Format JPEG)</span>
+                        </label>
+                        {{ form.photo }}
+                        {% if form.photo.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.photo.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Extrait de naissance -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.extraitNaissance.id_for_label }}" class="font-medium text-gray-700 mb-2">
+                            Extrait de naissance
+                            <span class="text-xs text-gray-500 font-normal">(Format PDF)</span>
+                        </label>
+                        {{ form.extraitNaissance }}
+                        {% if form.extraitNaissance.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.extraitNaissance.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Certificat de nationalité -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.certificatNationalite.id_for_label }}" class="font-medium text-gray-700 mb-2">
+                            Certificat de nationalité
+                            <span class="text-xs text-gray-500 font-normal">(Format PDF)</span>
+                        </label>
+                        {{ form.certificatNationalite }}
+                        {% if form.certificatNationalite.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.certificatNationalite.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Dernier diplôme -->
+                    <div class="flex flex-col">
+                        <label for="{{ form.diplome.id_for_label }}" class="font-medium text-gray-700 mb-2">
+                            Dernier diplôme obtenu
+                            <span class="text-xs text-gray-500 font-normal">(Format PDF)</span>
+                        </label>
+                        {{ form.diplome }}
+                        {% if form.diplome.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.diplome.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Lettre de motivation -->
+                    <div class="flex flex-col md:col-span-2">
+                        <label for="{{ form.lettreMotivation.id_for_label }}" class="font-medium text-gray-700 mb-2">
+                            Lettre de motivation
+                            <span class="text-xs text-gray-500 font-normal">(Format PDF)</span>
+                        </label>
+                        {{ form.lettreMotivation }}
+                        {% if form.lettreMotivation.errors %}
+                            <p class="text-red-600 text-sm mt-1">{{ form.lettreMotivation.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button type="button" id="back-to-step1" class="px-8 py-4 bg-gray-200 text-gray-700 font-semibold rounded-lg shadow-lg transition-all duration-300 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Retour
+                    </button>
+                    <button type="button" id="next-to-step3" class="px-8 py-4 bg-gradient-to-r from-blue-700 to-blue-500 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:from-blue-800 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        Vérifier mon dossier <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Confirmation -->
+            <div id="step3" class="form-step hidden">
+                <div class="mb-10">
+                    <div class="md:col-span-2 mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">Confirmation de votre candidature</h2>
+                        <p class="text-gray-600 mb-6">Veuillez vérifier les informations ci-dessous avant de soumettre votre candidature.</p>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-lg p-6 mb-8">
+                        <h3 class="font-semibold text-blue-700 mb-3">Informations personnelles</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p class="text-gray-500">Nom</p>
+                                <p class="font-medium text-gray-800" id="recap-nom"></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Prénom</p>
+                                <p class="font-medium text-gray-800" id="recap-prenom"></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Email</p>
+                                <p class="font-medium text-gray-800" id="recap-email"></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Niveau d'études</p>
+                                <p class="font-medium text-gray-800" id="recap-niveau"></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Établissement d'origine</p>
+                                <p class="font-medium text-gray-800" id="recap-etablissement"></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Concours souhaité</p>
+                                <p class="font-medium text-gray-800" id="recap-concours"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-lg p-6">
+                        <h3 class="font-semibold text-blue-700 mb-3">Documents fournis</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span id="recap-photo">Photo d'identité</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span id="recap-extrait">Extrait de naissance</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span id="recap-certificat">Certificat de nationalité</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span id="recap-diplome">Dernier diplôme</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span id="recap-lettre">Lettre de motivation</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-50 rounded-lg p-6 mt-6 border-l-4 border-yellow-400">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 text-lg mr-3"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-yellow-800">Important</p>
+                                <p class="text-sm text-yellow-700 mt-1">En soumettant ce formulaire, vous certifiez que les informations fournies sont exactes. Toute fausse déclaration pourra entraîner l'annulation de votre candidature.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button type="button" id="back-to-step2" class="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg shadow-lg transition-all duration-300 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Modifier mon dossier
+                    </button>
+                    <button type="submit" class="px-8 py-4 bg-gradient-to-r from-blue-700 to-blue-500 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:from-blue-800 hover:to-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                        <i class="fas fa-paper-plane mr-2"></i> Soumettre ma candidature
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Additional Information -->
+    <div class="mt-12 bg-blue-50 rounded-xl p-8 shadow-md">
+        <h2 class="text-2xl font-semibold mb-4 text-blue-700">Informations importantes</h2>
+        <ul class="space-y-4 text-gray-700">
+            <li class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 text-xl mr-3 mt-0.5"></i>
+                <span>Assurez-vous que tous les documents demandés sont au format PDF ou JPEG et ne dépassent pas 5 Mo chacun.</span>
+            </li>
+            <li class="flex items-start">
+                <i class="fas fa-id-card text-blue-500 text-xl mr-3 mt-0.5"></i>
+                <span>Votre photo d'identité doit être récente et en format JPEG.</span>
+            </li>
+            <li class="flex items-start">
+                <i class="fas fa-envelope text-blue-500 text-xl mr-3 mt-0.5"></i>
+                <span>Une fois l'inscription soumise, vous recevrez un email de confirmation avec votre numéro d'inscription unique.</span>
+            </li>
+            <li class="flex items-start">
+                <i class="fas fa-question-circle text-blue-500 text-xl mr-3 mt-0.5"></i>
+                <span>Pour toute question relative à l'inscription, contactez-nous à <a href="mailto:concours@esatic.edu.ci" class="text-blue-600 hover:underline">concours@esatic.edu.ci</a>.</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- JavaScript pour la barre de progression dynamique -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Éléments du DOM
+    const form = document.getElementById('inscription-form');
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    
+    const step1Label = document.getElementById('step1-label');
+    const step2Label = document.getElementById('step2-label');
+    const step3Label = document.getElementById('step3-label');
+    
+    const step1Circle = document.getElementById('step1-circle');
+    const step2Circle = document.getElementById('step2-circle');
+    const step3Circle = document.getElementById('step3-circle');
+    
+    const progressBar = document.getElementById('progress-bar');
+    
+    const nextToStep2Btn = document.getElementById('next-to-step2');
+    const backToStep1Btn = document.getElementById('back-to-step1');
+    const nextToStep3Btn = document.getElementById('next-to-step3');
+    const backToStep2Btn = document.getElementById('back-to-step2');
+    
+    // Gestion des événements pour les boutons de navigation
+    nextToStep2Btn.addEventListener('click', function() {
+        // Validation basique de l'étape 1
+        const nom = document.getElementById('{{ form.nom.id_for_label }}').value;
+        const prenom = document.getElementById('{{ form.prenom.id_for_label }}').value;
+        const email = document.getElementById('{{ form.email.id_for_label }}').value;
+        
+        if (!nom || !prenom || !email) {
+            alert('Veuillez remplir tous les champs obligatoires.');
+            return;
+        }
+        
+        // Passer à l'étape 2
+        step1.classList.add('hidden');
+        step1.classList.remove('active');
+        step2.classList.remove('hidden');
+        step2.classList.add('active');
+        
+        // Mettre à jour la barre de progression
+        progressBar.style.width = '66%';
+        step1Label.classList.remove('text-blue-700');
+        step1Label.classList.add('text-gray-400');
+        step2Label.classList.remove('text-gray-400');
+        step2Label.classList.add('text-blue-700');
+        
+        step2Circle.classList.remove('bg-gray-200', 'text-gray-600');
+        step2Circle.classList.add('bg-blue-600', 'text-white');
+    });
+    
+    backToStep1Btn.addEventListener('click', function() {
+        // Revenir à l'étape 1
+        step2.classList.add('hidden');
+        step2.classList.remove('active');
+        step1.classList.remove('hidden');
+        step1.classList.add('active');
+        
+        // Mettre à jour la barre de progression
+        progressBar.style.width = '33%';
+        step2Label.classList.remove('text-blue-700');
+        step2Label.classList.add('text-gray-400');
+        step1Label.classList.remove('text-gray-400');
+        step1Label.classList.add('text-blue-700');
+        
+        step2Circle.classList.add('bg-gray-200', 'text-gray-600');
+        step2Circle.classList.remove('bg-blue-600', 'text-white');
+    });
+    
+    nextToStep3Btn.addEventListener('click', function() {
+        // Validation basique de l'étape 2
+        const photo = document.getElementById('{{ form.photo.id_for_label }}').value;
+        const extrait = document.getElementById('{{ form.extraitNaissance.id_for_label }}').value;
+        
+        if (!photo || !extrait) {
+            alert('Veuillez télécharger au moins la photo et l\'extrait de naissance.');
+            return;
+        }
+        
+        // Remplir le récapitulatif
+        document.getElementById('recap-nom').textContent = document.getElementById('{{ form.nom.id_for_label }}').value;
+        document.getElementById('recap-prenom').textContent = document.getElementById('{{ form.prenom.id_for_label }}').value;
+        document.getElementById('recap-email').textContent = document.getElementById('{{ form.email.id_for_label }}').value;
+        document.getElementById('recap-niveau').textContent = document.getElementById('{{ form.niveauEtude.id_for_label }}').value;
+        document.getElementById('recap-etablissement').textContent = document.getElementById('{{ form.etablissementOrigine.id_for_label }}').value;
+        
+        // Récupérer le texte de l'option sélectionnée pour le concours
+        const concoursSelect = document.getElementById('{{ form.concoursSouhaiter.id_for_label }}');
+        document.getElementById('recap-concours').textContent = concoursSelect.options[concoursSelect.selectedIndex].text;
+        
+        // Vérifier les documents fournis
+        document.getElementById('recap-photo').innerHTML = document.getElementById('{{ form.photo.id_for_label }}').value ? 
+            'Photo d\'identité <span class="text-green-500 ml-1">(✓ Fourni)</span>' : 
+            'Photo d\'identité <span class="text-red-500 ml-1">(✗ Manquant)</span>';
+        
+        document.getElementById('recap-extrait').innerHTML = document.getElementById('{{ form.extraitNaissance.id_for_label }}').value ? 
+            'Extrait de naissance <span class="text-green-500 ml-1">(✓ Fourni)</span>' : 
+            'Extrait de naissance <span class="text-red-500 ml-1">(✗ Manquant)</span>';
+        
+        document.getElementById('recap-certificat').innerHTML = document.getElementById('{{ form.certificatNationalite.id_for_label }}').value ? 
+            'Certificat de nationalité <span class="text-green-500 ml-1">(✓ Fourni)</span>' : 
+            'Certificat de nationalité <span class="text-red-500 ml-1">(✗ Manquant)</span>';
+        
+        document.getElementById('recap-diplome').innerHTML = document.getElementById('{{ form.diplome.id_for_label }}').value ? 
+            'Dernier diplôme <span class="text-green-500 ml-1">(✓ Fourni)</span>' : 
+            'Dernier diplôme <span class="text-red-500 ml-1">(✗ Manquant)</span>';
+        
+        document.getElementById('recap-lettre').innerHTML = document.getElementById('{{ form.lettreMotivation.id_for_label }}').value ? 
+            'Lettre de motivation <span class="text-green-500 ml-1">(✓ Fourni)</span>' : 
+            'Lettre de motivation <span class="text-red-500 ml-1">(✗ Manquant)</span>';
+        
+        // Passer à l'étape 3
+        step2.classList.add('hidden');
+        step2.classList.remove('active');
+        step3.classList.remove('hidden');
+        step3.classList.add('active');
+        
+        // Mettre à jour la barre de progression
+        progressBar.style.width = '100%';
+        step2Label.classList.remove('text-blue-700');
+        step2Label.classList.add('text-gray-400');
+        step3Label.classList.remove('text-gray-400');
+        step3Label.classList.add('text-blue-700');
+        
+        step3Circle.classList.remove('bg-gray-200', 'text-gray-600');
+        step3Circle.classList.add('bg-blue-600', 'text-white');
+    });
+    
+    backToStep2Btn.addEventListener('click', function() {
+        // Revenir à l'étape 2
+        step3.classList.add('hidden');
+        step3.classList.remove('active');
+        step2.classList.remove('hidden');
+        step2.classList.add('active');
+        
+        // Mettre à jour la barre de progression
+        progressBar.style.width = '66%';
+        step3Label.classList.remove('text-blue-700');
+        step3Label.classList.add('text-gray-400');
+        step2Label.classList.remove('text-gray-400');
+        step2Label.classList.add('text-blue-700');
+        
+        step3Circle.classList.add('bg-gray-200', 'text-gray-600');
+        step3Circle.classList.remove('bg-blue-600', 'text-white');
+    });
+    
+    // Gestion de la soumission du formulaire
+    form.addEventListener('submit', function(e) {
+        // Optionnel: validation finale avant soumission
+        const requiredFields = [
+            '{{ form.nom.id_for_label }}',
+            '{{ form.prenom.id_for_label }}',
+            '{{ form.email.id_for_label }}',
+            '{{ form.niveauEtude.id_for_label }}',
+            '{{ form.etablissementOrigine.id_for_label }}',
+            '{{ form.concoursSouhaiter.id_for_label }}',
+            '{{ form.photo.id_for_label }}',
+            '{{ form.extraitNaissance.id_for_label }}'
+        ];
+        
+        let isValid = true;
+        requiredFields.forEach(fieldId => {
+            if (!document.getElementById(fieldId).value) {
+                isValid = false;
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Certains champs obligatoires ne sont pas remplis. Veuillez vérifier votre dossier.');
+        }
+    });
+});
+</script>
+{% endblock %}
