@@ -1,5 +1,5 @@
 # ESATIC Registration System
-#### Video Demo: <URL HERE>
+#### Video Demo: <https://www.youtube.com/watch?v=HnwT_2_hy6g>
 #### Description:
 
 ## Project Overview
