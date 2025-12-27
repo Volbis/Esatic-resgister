@@ -7,7 +7,7 @@ class InscriptionForm(forms.ModelForm):
         fields = [
             'nom', 'prenom', 'niveauEtude', 'email', 'etablissementOrigine',
             'concoursSouhaiter', 'extraitNaissance', 'certificatNationalite',
-            'lettreMotivation', 'diplome', 'photo'
+            'lettreMotivation', 'diplome', 'photo' 
         ]
         widgets = {
             'nom': forms.TextInput(attrs={

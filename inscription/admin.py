@@ -5,4 +5,4 @@ from .models import Inscription
 class InscriptionAdmin(admin.ModelAdmin):
     # Afficher plus de champs dans la liste des inscriptions
     list_display = ['id', 'nom', 'prenom', 'email']
-    
+     

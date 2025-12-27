@@ -7,7 +7,7 @@ class Inscription(models.Model):
         ('licence_srit', 'LICENCE SRIT'),
         ('master_informatique', 'MASTER INFORMATIQUE')
     ]
-    id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True) 
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     niveauEtude = models.CharField(max_length=150)
